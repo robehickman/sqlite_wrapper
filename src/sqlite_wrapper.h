@@ -5,7 +5,7 @@ Convenience wrapper for the SqLite database.
 #ifndef SQLITE_WRAPPER
 #define SQLITE_WRAPPER
 
-#include <sqlite3.h>
+#include "sqlite3.h"
 
 /****************************************************************//**
 * Result set structure, members should be considered private

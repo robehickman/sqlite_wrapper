@@ -1,5 +1,6 @@
 #include <jni.h>
 #include <sqlite3.h>
+#include <stdio.h>
 
 #include "sqlite_wrapper.h"
 
@@ -9,7 +10,7 @@ Sqlite wrapper object
 */
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-jlong Java_SqliteWrapper_JniInit
+jlong Java_sqliteWrapper_sqliteWrapper_JniInit
     (JNIEnv* env, jobject obj, jstring dbFile)
 {
     const jbyte *file_name = (*env)->GetStringUTFChars(env, dbFile, 0);
@@ -26,11 +27,25 @@ jlong Java_SqliteWrapper_JniInit
 
     *(sqlite3 **)&jdb = db; 
 
+    printf("opening\n");
+
     return jdb;
 }
 
+
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-jlong Java_SqliteWrapper_JniExecute
+int Java_sqliteWrapper_sqliteWrapper_JniCheckInitFail
+    (JNIEnv* env, jobject obj, jlong jdb)
+{
+    sqlite3 *db = *(sqlite3 **)&jdb; 
+
+    if(db == 0)
+        return 1;
+    return 0;
+}
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+jlong Java_sqliteWrapper_sqliteWrapper_JniExecute
     (JNIEnv* env, jobject obj, jlong jdb, jstring sql)
 {
     const jbyte *sql_string = (*env)->GetStringUTFChars(env, sql, 0);
@@ -43,15 +58,19 @@ jlong Java_SqliteWrapper_JniExecute
  
     *(sw_result_set **)&jresult_set = result_set; 
 
+    printf("running\n");
+
     return jresult_set;
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void Java_SqliteWrapper_JniDelete
+void Java_sqliteWrapper_sqliteWrapper_JniDelete
     (JNIEnv* env, jobject obj, jlong jdb)
 {
     sqlite3 *db = *(sqlite3 **)&jdb; 
     sqlite3_close(db);
+
+    printf("closing\n");
 }
 
 
@@ -61,7 +80,7 @@ Result set object
 
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-jstring Java_ResultSet_JniGetValue
+jstring Java_sqliteWrapper_resultSet_JniGetValue
     (JNIEnv* env, jobject obj, jlong jresult_set, jstring jcol_name, int row_num)
 {
     const jbyte *col_name = (*env)->GetStringUTFChars(env, jcol_name, 0);
@@ -75,7 +94,7 @@ jstring Java_ResultSet_JniGetValue
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-int Java_ResultSet_JniGetRowCount
+int Java_sqliteWrapper_resultSet_JniGetRowCount
     (JNIEnv* env, jobject obj, jlong jresult_set)
 {
     sw_result_set *result_set = *(sw_result_set **)&jresult_set; 
@@ -83,7 +102,7 @@ int Java_ResultSet_JniGetRowCount
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-int Java_ResultSet_JniGetColCount
+int Java_sqliteWrapper_resultSet_JniGetColCount
     (JNIEnv* env, jobject obj, jlong jresult_set)
 {
     sw_result_set *result_set = *(sw_result_set **)&jresult_set; 
@@ -91,7 +110,7 @@ int Java_ResultSet_JniGetColCount
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-int Java_ResultSet_JniCheckError
+int Java_sqliteWrapper_resultSet_JniCheckError
     (JNIEnv* env, jobject obj, jlong jresult_set)
 {
     sw_result_set *result_set = *(sw_result_set **)&jresult_set; 
@@ -99,7 +118,7 @@ int Java_ResultSet_JniCheckError
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-jstring Java_ResultSet_JniGetErrorMsg
+jstring Java_sqliteWrapper_resultSet_JniGetErrorMsg
     (JNIEnv* env, jobject obj, jlong jresult_set)
 {
     sw_result_set *result_set = *(sw_result_set **)&jresult_set; 
@@ -109,7 +128,7 @@ jstring Java_ResultSet_JniGetErrorMsg
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-void Java_ResultSet_JniDelete
+void Java_sqliteWrapper_resultSet_JniDelete
     (JNIEnv* env, jobject obj, jlong jresult_set)
 {
     sw_result_set *result_set = *(sw_result_set **)&jresult_set; 

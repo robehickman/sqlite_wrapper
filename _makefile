@@ -1,7 +1,0 @@
-main:
-	gcc --shared -o libSqliteWrapper.so sqlite_wrapper.c \
-		sqlite_wrapper_jni.c -I/usr/lib/jvm/java-6-openjdk/include/ \
-		-I-I/usr/lib/jvm/java-6-openjdk/include/linux/ -lsqlite3
-	mv libSqliteWrapper.so SqliteWrapper/
-
-

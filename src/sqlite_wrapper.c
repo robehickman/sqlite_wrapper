@@ -95,7 +95,7 @@ int sw_result_set__check_error(sw_result_set *result_set)
     if(result_set == 0)
         return 1;
 
-    if(result_set->error_msg == 0)
+    if(result_set->error_msg != 0)
         return 1;
 
     return 0;
