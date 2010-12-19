@@ -2,3 +2,6 @@
 *.so
 *.o
 *.a
+*.swp
+*.sqlite
+test

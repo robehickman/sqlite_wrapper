@@ -1,10 +1,6 @@
-main: resultSet.class sqliteWrapper.class 
+main:
+	javac -classpath ../ sqliteWrapper.java
+	javac -classpath ../ resultSet.java
 
 clean:
 	rm -Rf *.class
-
-sqliteWrapper.class:
-	javac -classpath ../ sqliteWrapper.java
-
-resultSet.class:
-	javac -classpath ../ resultSet.java

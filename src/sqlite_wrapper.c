@@ -43,6 +43,7 @@ static int sw_result_set__append_row(sw_result_set *result_set, char **row)
     {
         result_set->result_set[result_set->num_rows - 1][i] =
             malloc(strlen(row[i]) + 1);
+
         strcpy(result_set->result_set[result_set->num_rows - 1][i], row[i]);
     }
 }
@@ -178,7 +179,12 @@ static int callback(void *result_set, int argc,
     }
 
     for(i=0; i<argc; i++)
-        row[i] = argv[i];
+    {
+        if(argv[i] == NULL)
+            row[i] = "";
+        else
+            row[i] = argv[i];
+    }
 
     sw_result_set__append_row(result_set, row);
 
