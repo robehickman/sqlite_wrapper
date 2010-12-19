@@ -75,7 +75,10 @@ char * sw_result_set__get_value(sw_result_set *result_set,
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 int sw_result_set__get_row_count(sw_result_set *result_set)
 {
-    return result_set->num_rows;
+    if(result_set->num_rows == 0)
+        return 0;
+    else
+        return result_set->num_rows - 1;
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
